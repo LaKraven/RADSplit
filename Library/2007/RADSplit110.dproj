@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{34d08598-2ca3-4bf5-aee1-b3bff97e64f5}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>..\..\Bin\Win32\Release\RADSplit110.dll</DCC_DependencyCheckOutputName>
+    <MainSource>RADSplit110.dpr</MainSource>
+    <DCC_EnabledPackages>true</DCC_EnabledPackages>
+    <DCC_UsePackage>vcl;designide;rtl</DCC_UsePackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+    <DCC_UnitSearchPath>..\..\Source\Common</DCC_UnitSearchPath>
+    <DCC_ResourcePath>..\..\Source\Common</DCC_ResourcePath>
+    <DCC_ObjPath>..\..\Source\Common</DCC_ObjPath>
+    <DCC_IncludePath>..\..\Source\Common</DCC_IncludePath>
+    <DCC_ExeOutput>..\..\Bin\Win32\Release</DCC_ExeOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Define>DEBUG</DCC_Define>
+    <DCC_UnitSearchPath>..\..\Source\Common</DCC_UnitSearchPath>
+    <DCC_ResourcePath>..\..\Source\Common</DCC_ResourcePath>
+    <DCC_ObjPath>..\..\Source\Common</DCC_ObjPath>
+    <DCC_IncludePath>..\..\Source\Common</DCC_IncludePath>
+    <DCC_ExeOutput>..\..\Bin\Win32\Debug</DCC_ExeOutput>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject> <Delphi.Personality>   <Parameters>
+      <Parameters Name="UseLauncher">False</Parameters>
+      <Parameters Name="LoadAllSymbols">True</Parameters>
+      <Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+    </Parameters>
+    <VersionInfo>
+      <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+      <VersionInfo Name="AutoIncBuild">True</VersionInfo>
+      <VersionInfo Name="MajorVer">0</VersionInfo>
+      <VersionInfo Name="MinorVer">1</VersionInfo>
+      <VersionInfo Name="Release">0</VersionInfo>
+      <VersionInfo Name="Build">4</VersionInfo>
+      <VersionInfo Name="Debug">False</VersionInfo>
+      <VersionInfo Name="PreRelease">False</VersionInfo>
+      <VersionInfo Name="Special">False</VersionInfo>
+      <VersionInfo Name="Private">False</VersionInfo>
+      <VersionInfo Name="DLL">False</VersionInfo>
+      <VersionInfo Name="Locale">2057</VersionInfo>
+      <VersionInfo Name="CodePage">1252</VersionInfo>
+    </VersionInfo>
+    <VersionInfoKeys>
+      <VersionInfoKeys Name="CompanyName">LaKraven Studios Ltd</VersionInfoKeys>
+      <VersionInfoKeys Name="FileDescription">RADSplit - Dockable Editor Windows for RAD Studio</VersionInfoKeys>
+      <VersionInfoKeys Name="FileVersion">0.1.0.4</VersionInfoKeys>
+      <VersionInfoKeys Name="InternalName">RADSplit</VersionInfoKeys>
+      <VersionInfoKeys Name="LegalCopyright">Copyright (C) 2011-2012, LaKraven Studios Ltd, All Rights Reserved</VersionInfoKeys>
+      <VersionInfoKeys Name="LegalTrademarks">RADSplit and the RADSplit logo are Trademarks of LaKraven Studios Ltd</VersionInfoKeys>
+      <VersionInfoKeys Name="OriginalFilename">RADSplit110.dll</VersionInfoKeys>
+      <VersionInfoKeys Name="ProductName">RADSplit for RAD Studio 2007</VersionInfoKeys>
+      <VersionInfoKeys Name="ProductVersion">0.1.0.1</VersionInfoKeys>
+      <VersionInfoKeys Name="Comments"></VersionInfoKeys>
+    </VersionInfoKeys>
+    <Source>
+      <Source Name="MainSource">RADSplit110.dpr</Source>
+    </Source>
+    <Excluded_Packages>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <Excluded_Packages Name="$(BDS)\bin\bcboffice2k100.bpl">CodeGear C++Builder Office 2000 Servers Package</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\bcbofficexp100.bpl">CodeGear C++Builder Office XP Servers Package</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dcloffice2k100.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dclofficexp100.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+    </Excluded_Packages>
+  </Delphi.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="RADSplit110.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="..\..\Source\Components\RADSplit.Components.Main.pas" />
+    <DCCReference Include="..\..\Source\Core\RADSplit.Core.Wizard.pas" />
+    <None Include="..\..\Source\Common\LKSL.inc" />
+  </ItemGroup>
+</Project>
