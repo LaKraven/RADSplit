@@ -94,7 +94,6 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="..\..\Source\Core\RADSplit.Core.Wizard.pas"/>
-        <DCCReference Include="..\..\Source\Components\RADSplit.Components.Main.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

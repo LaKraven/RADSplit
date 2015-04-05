@@ -33,7 +33,6 @@ requires
   DesignIDE;
 
 contains
-  RADSplit.Core.Wizard in '..\..\Source\Core\RADSplit.Core.Wizard.pas',
-  RADSplit.Components.Main in '..\..\Source\Components\RADSplit.Components.Main.pas';
+  RADSplit.Core.Wizard in '..\..\Source\Core\RADSplit.Core.Wizard.pas';
 
 end.

@@ -21,9 +21,6 @@ exports
 
 implementation
 
-//uses
-//  RADSplit.Components.Main;
-
 type
   TRADSplitForm = class(TDockableForm)
   private
