@@ -2,7 +2,7 @@ unit RADSplit.Components.Main;
 
 interface
 
-{$I LKSL.inc}
+{$I ..\Common\RADSplit.inc}
 
 uses
   Classes, ToolsAPI, DockForm, SysUtils,

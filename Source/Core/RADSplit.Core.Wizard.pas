@@ -2,7 +2,7 @@ unit RADSplit.Core.Wizard;
 
 interface
 
-{$I LKSL.inc}
+{$I ..\Common\RADSplit.inc}
 
 uses
   Classes, SysUtils, DockForm, DeskUtil, DeskForm,
@@ -26,6 +26,9 @@ implementation
 
 type
   TRADSplitForm = class(TDockableForm)
+  private
+    FEditWindow: INTAEditWindow;
+    procedure DoDockDrop(Sender: TObject; Source: TDragDockObject; X, Y: Integer);
   public
     procedure RegisterDockable;
     constructor Create(AOwner: TComponent); overload; override;
@@ -36,15 +39,12 @@ type
   TRADSplitWindow = class(TPersistent)
   private
     FDockable: TRADSplitForm;
-    FTick: Integer;
-    FTimer: TTimer;
     FEditWindow: INTAEditWindow;
-    FEditorOnClose: TCloseEvent;
-    procedure EditorOnClose(Sender: TObject; var Action: TCloseAction);
-    procedure TimerOnInterval(Sender: TObject);
   public
     constructor Create(const AEditWindow: INTAEditWindow);
     destructor Destroy; override;
+
+    procedure AfterConstruction; override;
   published
     property EditWindow: INTAEditWindow read FEditWindow write FEditWindow;
   end;
@@ -101,10 +101,17 @@ end;
 constructor TRADSplitForm.Create(AOwner: TComponent);
 begin
   inherited;
+  DoubleBuffered := True;
   DeskSection := 'RADSplit';
   AutoSave := True;
 
   SaveStateNecessary := True;
+end;
+
+procedure TRADSplitForm.DoDockDrop(Sender: TObject; Source: TDragDockObject; X, Y: Integer);
+begin
+  FEditWindow.Form.Refresh;
+  FEditWindow.Form.Repaint;
 end;
 
 constructor TRADSplitForm.Create(AOwner: TComponent; AEditWindow: INTAEditWindow);
@@ -113,13 +120,16 @@ begin
 //  SetParentComponent(AOwner);
   Name := AEditWindow.Form.Name + '_RADSplit';
   Caption := 'RADSplit Dockable Editor';
+  AEditWindow.Form.DoubleBuffered := True;
+  DoubleBuffered := True;
+  OnDockDrop := DoDockDrop;
 
   Width := AEditWindow.Form.Width;
   Height := AEditWindow.Form.Height;
   Top := AEditWindow.Form.Top;
   Left := AEditWindow.Form.Left;
 //  RegisterDockable;
-
+  FEditWindow := AEditWindow;
   AEditWindow.Form.Dock(Self, Rect(0, 0, 20, 20));
   AEditWindow.Form.BorderStyle := bsNone;
   AEditWindow.Form.Align := alClient;
@@ -127,6 +137,8 @@ end;
 
 destructor TRADSplitForm.Destroy;
 begin
+  FEditWindow.Form.Align := alNone;
+  FEditWindow.Form.Free;
   SaveStateNecessary := True;
   inherited;
 end;
@@ -140,46 +152,24 @@ end;
 
 { TRADSplitWindow }
 
+procedure TRADSplitWindow.AfterConstruction;
+begin
+  inherited;
+  FDockable := TRADSplitForm.Create(FEditWindow.Form.GetParentComponent, FEditWindow);
+  FDockable.Show;
+end;
+
 constructor TRADSplitWindow.Create(const AEditWindow: INTAEditWindow);
 begin
   inherited Create;
   FEditWindow := AEditWindow;
-//  if Assigned(TForm(AEditWindow.Form).OnClose) then
-//    ShowMessage('OnClose Assigned!');
-//  FEditorOnClose := TForm(AEditWindow.Form).OnClose;
-//  TForm(AEditWindow.Form).OnClose := FEditorOnClose;
-
-  FTick := 0;
-  FTimer := TTimer.Create(nil);
-  FTimer.Interval := 1000;
-  FTimer.OnTimer := TimerOnInterval;
-  FTimer.Enabled := True;
 end;
 
 destructor TRADSplitWindow.Destroy;
 begin
-  FTimer.Free;
-  FEditWindow.Form.Dock(nil, Rect(FDockable.Left, FDockable.Top, FDockable.Width, FDockable.Height));
+  FEditWindow.Form.Dock(nil, Rect(0, 0, Screen.Width, Screen.Height));
   FDockable.Free;
-  FEditWindow := nil;
   inherited;
-end;
-
-procedure TRADSplitWindow.EditorOnClose(Sender: TObject; var Action: TCloseAction);
-begin
-  FDockable.Close;
-end;
-
-procedure TRADSplitWindow.TimerOnInterval(Sender: TObject);
-begin
-  Inc(FTick);
-  if FTick = 1 then
-  begin
-    FDockable := TRADSplitForm.Create(FEditWindow.Form.GetParentComponent, FEditWindow);
-    FDockable.Show;
-
-    FTimer.Enabled := False;
-  end;
 end;
 
 { TEditorSplitter }
@@ -188,9 +178,12 @@ procedure TRADSplitNotifier.MakeDockable(const EditWindow: INTAEditWindow);
 var
   LIndex: Integer;
 begin
-  LIndex := Length(FRADSplitWindows);
-  SetLength(FRADSplitWindows, LIndex + 1);
-  FRADSplitWindows[LIndex] := TRADSplitWindow.Create(EditWindow);
+  if EditWindow.Form.Parent = nil then
+  begin
+    LIndex := Length(FRADSplitWindows);
+    SetLength(FRADSplitWindows, LIndex + 1);
+    FRADSplitWindows[LIndex] := TRADSplitWindow.Create(EditWindow);
+  end;
 end;
 
 procedure TRADSplitNotifier.RemoveDockable(const EditWindow: INTAEditWindow);
@@ -207,7 +200,6 @@ begin
 
   if LIndex = -1 then
     Exit;
-  ShowMessage('Freeing it');
   FRADSplitWindows[LIndex].Free;
 
   LCount := Length(FRADSplitWindows);
@@ -285,7 +277,7 @@ end;
 
 procedure TRADSplitNotifier.WindowNotification(const EditWindow: INTAEditWindow; Operation: TOperation);
 begin
-  if EditWindow.Form.Name = 'EditWindow_0' then
+  if (EditWindow.Form.Parent <> nil) or (EditWindow.Form.Name = 'EditWindow_0') then
     Exit;
 
   case Operation of
@@ -295,40 +287,12 @@ begin
 end;
 
 procedure TRADSplitNotifier.WindowShow(const EditWindow: INTAEditWindow; Show, LoadedFromDesktop: Boolean);
-//var
-//  LButton: TRADSplitButton;
 begin
-// ORIGINAL METHOD
 
-//  LButton := TRADSplitButton(EditWindow.Form.FindComponent('RADSplitButton'));
-//
-//  if Show then
-//  begin
-//    if LButton <> nil then
-//      Exit;
-//
-//    if EditWindow.Form.Name = 'EditWindow_0' then
-//      Exit;
-//
-//    LButton := TRADSplitButton.Create(EditWindow.Form);
-//    LButton.Name := 'RADSplitButton';
-//    LButton.EditWindow := EditWindow;
-//    LButton.Flat := True;
-//    {$IFDEF DELPHI2009}
-//      LButton.SetParentComponent(EditWindow.Form);
-//    {$ELSE}
-//      LButton.Parent := EditWindow.Form;
-//    {$ENDIF}
-//    LButton.Caption := 'Make Dockable';
-//    LButton.Align := alTop;
-//  end else
-//  begin
-//    if LButton <> nil then
-//      LButton.Free;
-//  end;
 end;
 
 initialization
+  LNotifier := (BorlandIDEServices as IOTAEditorServices).AddNotifier(TRADSplitNotifier.Create);
 finalization
   UninitWizard;
 

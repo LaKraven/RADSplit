@@ -52,3 +52,5 @@ __history/
 *.~*
 
 *.dcu
+*.stat
+*.res
