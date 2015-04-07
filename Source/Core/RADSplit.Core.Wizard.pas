@@ -7,9 +7,9 @@ interface
 uses
   Classes, SysUtils, DockForm, DeskUtil, DeskForm,
   {$IFDEF DELPHIXE2}
-    VCL.Controls, VCL.Forms, Vcl.ExtCtrls, Vcl.Dialogs,
+    VCL.Controls, VCL.Forms, Vcl.ExtCtrls,
   {$ELSE}
-    Controls, Forms, ExtCtrls, Dialogs,
+    Controls, Forms, ExtCtrls,
   {$ENDIF}
   ToolsAPI;
 
