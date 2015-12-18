@@ -363,7 +363,7 @@
 
 // MINIMUM SUPPORTED VERSION
   {$IFNDEF DELPHI2007}
-    {$MESSAGE FATAL 'Your version of Delphi is older than Delphi 2007, and not supported by the LaKraven Studios Standard Library [LKSL] (www.lakraven.com)'}
+    {$MESSAGE FATAL 'Your version of Delphi is older than Delphi 2007, and not supported.'}
   {$ELSE}
     {$DEFINE LKSL}
   {$ENDIF}
